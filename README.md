@@ -1,7 +1,7 @@
 Klipper Security Oauth Bundle
 =============================
 
-The Security Oauth bundle provides to extend Symfony Console component.
+The Security Oauth bundle provides to implement the League Oauth 2.0 Server.
 
 Resources
 ---------
