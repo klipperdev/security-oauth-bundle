@@ -13,9 +13,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4.0",
-        "doctrine/orm": "^2.6.0",
-        "klipper/model": "^2.0.0",
-        "league/oauth2-server": "^8.1.0",
+        "klipper/security-oauth": "^2.0.0",
         "symfony/framework-bundle": "^4.4.0"
     },
     "autoload": {
