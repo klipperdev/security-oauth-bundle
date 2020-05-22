@@ -51,6 +51,19 @@ class Configuration implements ConfigurationInterface
     {
         return NodeUtils::createArrayNode('grants')
             ->addDefaultsIfNotSet()
+            ->append($this->getPasswordGrantNode())
+        ;
+    }
+
+    private function getPasswordGrantNode(): NodeDefinition
+    {
+        return NodeUtils::createArrayNode('password')
+            ->addDefaultsIfNotSet()
+            ->canBeDisabled()
+            ->children()
+            ->scalarNode('refresh_token_ttl')->defaultValue('P1M')->end()
+            ->scalarNode('access_token_ttl')->defaultValue('PT1H')->end()
+            ->end()
         ;
     }
 }

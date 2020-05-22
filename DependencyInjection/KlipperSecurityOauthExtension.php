@@ -14,6 +14,7 @@ namespace Klipper\Bundle\SecurityOauthBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\FileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -45,6 +46,7 @@ class KlipperSecurityOauthExtension extends Extension
         $container->setParameter('klipper_security_oauth.server.encryption_key', $config['encryption_key']);
 
         $this->configureUserRepository($container, $config);
+        $this->configurePasswordGrant($container, $loader, $config['grants']['password']);
     }
 
     /**
@@ -57,5 +59,25 @@ class KlipperSecurityOauthExtension extends Extension
             0,
             new Reference('security.user.provider.concrete.'.$config['user_provider'])
         );
+    }
+
+    /**
+     * @throws
+     */
+    private function configurePasswordGrant(ContainerBuilder $container, FileLoader $loader, array $config): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('oauth_grant_password.xml');
+        $serverDef = $container->getDefinition('klipper_security_oauth.server');
+        $container->setParameter('klipper_security_oauth.grant.password.refresh_token_ttl', $config['refresh_token_ttl']);
+        $container->setParameter('klipper_security_oauth.grant.password.access_token_ttl', $config['access_token_ttl']);
+
+        $serverDef->addMethodCall('enableGrantType', [
+            new Reference('klipper_security_oauth.grant.password'),
+            new Reference('klipper_security_oauth.grant.password.access_token_ttl'),
+        ]);
     }
 }
