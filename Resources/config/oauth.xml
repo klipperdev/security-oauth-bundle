@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="klipper_security_oauth.server"
+                 class="League\OAuth2\Server\AuthorizationServer"
+                 public="true">
+            <argument type="service" id="klipper_security_oauth.repository.client" />
+            <argument type="service" id="klipper_security_oauth.repository.access_token" />
+            <argument type="service" id="klipper_security_oauth.repository.scope" />
+            <argument type="service" id="klipper_security_oauth.server.private_key" />
+            <argument type="service" id="klipper_security_oauth.server.encryption_key" />
+        </service>
+
+        <service id="League\OAuth2\Server\AuthorizationServer" alias="klipper_security_oauth.server" public="true" />
+
+        <!-- Private Key -->
+        <service id="klipper_security_oauth.server.private_key"
+                 class="League\OAuth2\Server\CryptKey">
+            <argument>%klipper_security_oauth.server.private_key%</argument>
+            <argument>%klipper_security_oauth.server.private_key_passphrase%</argument>
+            <argument>%klipper_security_oauth.server.private_key_permissions_check%</argument>
+        </service>
+
+        <!-- Encryption Key -->
+        <service id="klipper_security_oauth.server.encryption_key"
+                 class="Defuse\Crypto\Key">
+            <factory class="Defuse\Crypto\Key" method="loadFromAsciiSafeString" />
+            <argument>%klipper_security_oauth.server.encryption_key%</argument>
+        </service>
+
+        <!-- User Repository -->
+        <service id="klipper_security_oauth.repository.user"
+                 class="Klipper\Component\SecurityOauth\Bridge\UserRepository">
+            <argument />
+            <argument type="service" id="security.password_encoder" />
+        </service>
+
+        <!-- Client Repository -->
+        <service id="klipper_security_oauth.repository.client"
+                 class="Klipper\Component\SecurityOauth\Bridge\ClientRepository">
+            <argument>service('doctrine').getEntityManagerForClass('Klipper\\Component\\SecurityOauth\\Model\\OauthClientInterface')</argument>
+        </service>
+
+        <!-- Access Token Repository -->
+        <service id="klipper_security_oauth.repository.access_token"
+                 class="Klipper\Component\SecurityOauth\Bridge\AccessTokenRepository">
+            <argument>service('doctrine').getEntityManagerForClass('Klipper\\Component\\SecurityOauth\\Model\\OauthAccessTokenInterface')</argument>
+        </service>
+
+        <!-- Scope Repository -->
+        <service id="klipper_security_oauth.repository.scope"
+                 class="Klipper\Component\SecurityOauth\Bridge\ScopeRepository">
+        </service>
+
+        <!-- Refresh Token Repository -->
+        <service id="klipper_security_oauth.repository.refresh_token"
+                 class="Klipper\Component\SecurityOauth\Bridge\RefreshTokenRepository">
+            <argument>service('doctrine').getEntityManagerForClass('Klipper\\Component\\SecurityOauth\\Model\\OauthRefreshTokenInterface')</argument>
+        </service>
+
+        <!-- Auth Code Repository -->
+        <service id="klipper_security_oauth.repository.auth_code"
+                 class="Klipper\Component\SecurityOauth\Bridge\AuthCodeRepository">
+            <argument>service('doctrine').getEntityManagerForClass('Klipper\\Component\\SecurityOauth\\Model\\OauthAuthCodeInterface')</argument>
+        </service>
+
+    </services>
+</container>

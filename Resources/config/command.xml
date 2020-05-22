@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="klipper_security_oauth.command.init"
+                 class="Klipper\Component\SecurityOauth\Command\InitOauthServerCommand">
+            <tag name="console.command" command="init:oauth" />
+            <argument>%klipper_security_oauth.server.private_key%</argument>
+            <argument>%klipper_security_oauth.server.private_key_passphrase%</argument>
+        </service>
+
+        <service id="klipper_security_oauth.command.generate_oauth_encryption_key"
+                 class="Klipper\Component\SecurityOauth\Command\GenerateOauthEncryptionKeyCommand">
+            <tag name="console.command" command="generate:oauth:encryption-key" />
+        </service>
+
+    </services>
+</container>
