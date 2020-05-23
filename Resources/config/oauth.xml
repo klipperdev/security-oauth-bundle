@@ -43,13 +43,13 @@
         <!-- Client Repository -->
         <service id="klipper_security_oauth.repository.client"
                  class="Klipper\Component\SecurityOauth\Bridge\ClientRepository">
-            <argument>service('doctrine').getEntityManagerForClass('Klipper\\Component\\SecurityOauth\\Model\\OauthClientInterface')</argument>
+            <argument type="expression">service('doctrine.orm.entity_manager').getRepository('Klipper\\Component\\SecurityOauth\\Model\\OauthClientInterface')</argument>
         </service>
 
         <!-- Access Token Repository -->
         <service id="klipper_security_oauth.repository.access_token"
                  class="Klipper\Component\SecurityOauth\Bridge\AccessTokenRepository">
-            <argument>service('doctrine').getEntityManagerForClass('Klipper\\Component\\SecurityOauth\\Model\\OauthAccessTokenInterface')</argument>
+            <argument type="expression">service('doctrine.orm.entity_manager').getRepository('Klipper\\Component\\SecurityOauth\\Model\\OauthAccessTokenInterface')</argument>
         </service>
 
         <!-- Scope Repository -->
@@ -60,13 +60,13 @@
         <!-- Refresh Token Repository -->
         <service id="klipper_security_oauth.repository.refresh_token"
                  class="Klipper\Component\SecurityOauth\Bridge\RefreshTokenRepository">
-            <argument>service('doctrine').getEntityManagerForClass('Klipper\\Component\\SecurityOauth\\Model\\OauthRefreshTokenInterface')</argument>
+            <argument type="expression">service('doctrine.orm.entity_manager').getRepository('Klipper\\Component\\SecurityOauth\\Model\\OauthRefreshTokenInterface')</argument>
         </service>
 
         <!-- Auth Code Repository -->
         <service id="klipper_security_oauth.repository.auth_code"
                  class="Klipper\Component\SecurityOauth\Bridge\AuthCodeRepository">
-            <argument>service('doctrine').getEntityManagerForClass('Klipper\\Component\\SecurityOauth\\Model\\OauthAuthCodeInterface')</argument>
+            <argument type="expression">service('doctrine.orm.entity_manager').getRepository('Klipper\\Component\\SecurityOauth\\Model\\OauthAuthCodeInterface')</argument>
         </service>
 
     </services>
