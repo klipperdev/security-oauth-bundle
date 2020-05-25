@@ -39,6 +39,7 @@ class KlipperSecurityOauthExtension extends Extension
 
         $loader->load('oauth.xml');
         $loader->load('command.xml');
+        $loader->load('doctrine_subscriber.xml');
 
         $container->setParameter('klipper_security_oauth.server.private_key', $config['private_key']);
         $container->setParameter('klipper_security_oauth.server.private_key_passphrase', $config['private_key_passphrase']);
