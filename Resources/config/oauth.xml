@@ -38,6 +38,9 @@
                  class="Klipper\Component\SecurityOauth\Bridge\UserRepository">
             <argument />
             <argument type="service" id="security.password_encoder" />
+            <argument type="service" id="security.authentication.manager" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="request_stack" />
         </service>
 
         <!-- Client Repository -->
