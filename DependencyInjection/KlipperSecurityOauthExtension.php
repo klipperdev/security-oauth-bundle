@@ -42,7 +42,7 @@ class KlipperSecurityOauthExtension extends Extension
         $loader->load('doctrine_subscriber.xml');
         $loader->load('exception_listener.xml');
 
-        $container->setParameter('klipper_security_oauth.server.public_key', $config['public_key'] ?? $this->getPublicKey($config['private_key']));
+        $container->setParameter('klipper_security_oauth.server.public_key', $config['public_key']);
         $container->setParameter('klipper_security_oauth.server.private_key', $config['private_key']);
         $container->setParameter('klipper_security_oauth.server.private_key_passphrase', $config['private_key_passphrase']);
         $container->setParameter('klipper_security_oauth.server.private_key_permissions_check', $config['private_key_permissions_check']);
@@ -105,20 +105,5 @@ class KlipperSecurityOauthExtension extends Extension
             new Reference('klipper_security_oauth.grant.refresh_token'),
             new Reference('klipper_security_oauth.grant.refresh_token.access_token_ttl'),
         ]);
-    }
-
-    private function getPublicKey(string $privateKey): string
-    {
-        if (false !== strpos($privateKey, 'priv')) {
-            $publicKey = sprintf(
-                '%s/%s',
-                \dirname($privateKey),
-                str_replace(['private', 'priv'], 'public', basename($privateKey))
-            );
-        } else {
-            $publicKey = str_replace('.key', 'public.key', $privateKey);
-        }
-
-        return $publicKey;
     }
 }
