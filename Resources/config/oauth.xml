@@ -6,7 +6,8 @@
 
     <services>
 
-        <service id="klipper_security_oauth.server"
+        <!-- Authorization Server -->
+        <service id="klipper_security_oauth.authorization_server"
                  class="League\OAuth2\Server\AuthorizationServer"
                  public="true">
             <argument type="service" id="klipper_security_oauth.repository.client" />
@@ -16,7 +17,7 @@
             <argument type="service" id="klipper_security_oauth.server.encryption_key" />
         </service>
 
-        <service id="League\OAuth2\Server\AuthorizationServer" alias="klipper_security_oauth.server" public="true" />
+        <service id="League\OAuth2\Server\AuthorizationServer" alias="klipper_security_oauth.authorization_server" public="true" />
 
         <!-- Private Key -->
         <service id="klipper_security_oauth.server.private_key"

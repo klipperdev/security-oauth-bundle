@@ -75,7 +75,7 @@ class KlipperSecurityOauthExtension extends Extension
         }
 
         $loader->load('oauth_grant_password.xml');
-        $serverDef = $container->getDefinition('klipper_security_oauth.server');
+        $serverDef = $container->getDefinition('klipper_security_oauth.authorization_server');
         $container->setParameter('klipper_security_oauth.grant.password.refresh_token_ttl', $config['refresh_token_ttl'] ?? $default['refresh_token_ttl']);
         $container->setParameter('klipper_security_oauth.grant.password.access_token_ttl', $config['access_token_ttl'] ?? $default['access_token_ttl']);
 
@@ -95,7 +95,7 @@ class KlipperSecurityOauthExtension extends Extension
         }
 
         $loader->load('oauth_grant_refresh_token.xml');
-        $serverDef = $container->getDefinition('klipper_security_oauth.server');
+        $serverDef = $container->getDefinition('klipper_security_oauth.authorization_server');
         $container->setParameter('klipper_security_oauth.grant.refresh_token.refresh_token_ttl', $config['refresh_token_ttl'] ?? $default['refresh_token_ttl']);
         $container->setParameter('klipper_security_oauth.grant.refresh_token.access_token_ttl', $config['access_token_ttl'] ?? $default['access_token_ttl']);
 
