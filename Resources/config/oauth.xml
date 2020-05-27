@@ -6,6 +6,13 @@
 
     <services>
 
+        <!-- Resource Server -->
+        <service id="klipper_security_oauth.resource_server"
+                 class="League\OAuth2\Server\ResourceServer">
+            <argument type="service" id="klipper_security_oauth.repository.access_token" />
+            <argument type="service" id="klipper_security_oauth.server.public_key" />
+        </service>
+
         <!-- Authorization Server -->
         <service id="klipper_security_oauth.authorization_server"
                  class="League\OAuth2\Server\AuthorizationServer"
@@ -25,6 +32,14 @@
             <argument>%klipper_security_oauth.server.private_key%</argument>
             <argument>%klipper_security_oauth.server.private_key_passphrase%</argument>
             <argument>%klipper_security_oauth.server.private_key_permissions_check%</argument>
+        </service>
+
+        <!-- Public Key -->
+        <service id="klipper_security_oauth.server.public_key"
+                 class="League\OAuth2\Server\CryptKey">
+            <argument>%klipper_security_oauth.server.public_key%</argument>
+            <argument>null</argument>
+            <argument>false</argument>
         </service>
 
         <!-- Encryption Key -->
