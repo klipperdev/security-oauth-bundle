@@ -53,6 +53,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->append($this->getDefaultNode())
             ->append($this->getPasswordGrantNode())
+            ->append($this->getRefreshTokenGrantNode())
         ;
     }
 
@@ -65,12 +66,24 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('refresh_token_ttl')->defaultValue('P1M')->end()
             ->scalarNode('access_token_ttl')->defaultValue('PT1H')->end()
             ->end()
-            ;
+        ;
     }
 
     private function getPasswordGrantNode(): NodeDefinition
     {
         return NodeUtils::createArrayNode('password')
+            ->addDefaultsIfNotSet()
+            ->canBeDisabled()
+            ->children()
+            ->scalarNode('refresh_token_ttl')->defaultNull()->end()
+            ->scalarNode('access_token_ttl')->defaultNull()->end()
+            ->end()
+        ;
+    }
+
+    private function getRefreshTokenGrantNode(): NodeDefinition
+    {
+        return NodeUtils::createArrayNode('refresh_token')
             ->addDefaultsIfNotSet()
             ->canBeDisabled()
             ->children()

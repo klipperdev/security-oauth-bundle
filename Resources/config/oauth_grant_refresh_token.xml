@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="klipper_security_oauth.grant.refresh_token"
+                 class="League\OAuth2\Server\Grant\RefreshTokenGrant">
+            <argument type="service" id="klipper_security_oauth.repository.refresh_token" />
+            <call method="setRefreshTokenTTL">
+                <argument type="service" id="klipper_security_oauth.grant.refresh_token.refresh_token_ttl" />
+            </call>
+        </service>
+
+        <service id="klipper_security_oauth.grant.refresh_token.refresh_token_ttl"
+                 class="DateInterval">
+            <argument>%klipper_security_oauth.grant.refresh_token.refresh_token_ttl%</argument>
+        </service>
+
+        <service id="klipper_security_oauth.grant.refresh_token.access_token_ttl"
+                 class="DateInterval">
+            <argument>%klipper_security_oauth.grant.refresh_token.access_token_ttl%</argument>
+        </service>
+
+    </services>
+</container>
