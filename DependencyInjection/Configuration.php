@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('user_provider')->defaultValue('users')->end()
+            ->scalarNode('public_key')->defaultNull()->end()
             ->scalarNode('private_key')->defaultValue('%env(resolve:OAUTH2_PRIVATE_KEY)%')->end()
             ->scalarNode('private_key_passphrase')->defaultValue('%env(OAUTH2_PRIVATE_KEY_PASSPHRASE)%')->end()
             ->booleanNode('private_key_permissions_check')->defaultTrue()->end()
