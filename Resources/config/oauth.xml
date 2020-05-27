@@ -33,15 +33,21 @@
             <argument>%klipper_security_oauth.server.encryption_key%</argument>
         </service>
 
+        <!-- Oauth Authentication Manager -->
+        <service id="klipper_security_oauth.authentication.manager"
+                 class="Klipper\Component\SecurityOauth\Authentication\AuthenticationManager">
+            <argument type="service" id="security.authentication.manager" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
+
         <!-- User Repository -->
         <service id="klipper_security_oauth.repository.user"
                  class="Klipper\Component\SecurityOauth\Bridge\UserRepository">
             <argument />
             <argument type="service" id="security.password_encoder" />
-            <argument type="service" id="security.authentication.manager" />
-            <argument type="service" id="security.token_storage" />
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="klipper_security_oauth.authentication.manager" />
         </service>
 
         <!-- Client Repository -->
