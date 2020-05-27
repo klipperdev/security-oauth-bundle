@@ -40,6 +40,7 @@ class KlipperSecurityOauthExtension extends Extension
         $loader->load('oauth.xml');
         $loader->load('command.xml');
         $loader->load('doctrine_subscriber.xml');
+        $loader->load('exception_listener.xml');
 
         $container->setParameter('klipper_security_oauth.server.public_key', $config['public_key'] ?? $this->getPublicKey($config['private_key']));
         $container->setParameter('klipper_security_oauth.server.private_key', $config['private_key']);
