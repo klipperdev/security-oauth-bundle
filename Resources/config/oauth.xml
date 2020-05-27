@@ -41,6 +41,7 @@
             <argument type="service" id="security.authentication.manager" />
             <argument type="service" id="security.token_storage" />
             <argument type="service" id="request_stack" />
+            <argument type="service" id="event_dispatcher" />
         </service>
 
         <!-- Client Repository -->
