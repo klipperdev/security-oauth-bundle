@@ -47,7 +47,7 @@ class KlipperSecurityOauthExtension extends Extension
         $container->setParameter('klipper_security_oauth.server.encryption_key', $config['encryption_key']);
 
         $this->configureUserRepository($container, $config);
-        $this->configurePasswordGrant($container, $loader, $config['grants']['password']);
+        $this->configurePasswordGrant($container, $loader, $config['grants']['password'], $config['grants']['default']);
     }
 
     /**
@@ -65,7 +65,7 @@ class KlipperSecurityOauthExtension extends Extension
     /**
      * @throws
      */
-    private function configurePasswordGrant(ContainerBuilder $container, FileLoader $loader, array $config): void
+    private function configurePasswordGrant(ContainerBuilder $container, FileLoader $loader, array $config, array $default): void
     {
         if (!$config['enabled']) {
             return;
@@ -73,8 +73,8 @@ class KlipperSecurityOauthExtension extends Extension
 
         $loader->load('oauth_grant_password.xml');
         $serverDef = $container->getDefinition('klipper_security_oauth.server');
-        $container->setParameter('klipper_security_oauth.grant.password.refresh_token_ttl', $config['refresh_token_ttl']);
-        $container->setParameter('klipper_security_oauth.grant.password.access_token_ttl', $config['access_token_ttl']);
+        $container->setParameter('klipper_security_oauth.grant.password.refresh_token_ttl', $config['refresh_token_ttl'] ?? $default['refresh_token_ttl']);
+        $container->setParameter('klipper_security_oauth.grant.password.access_token_ttl', $config['access_token_ttl'] ?? $default['access_token_ttl']);
 
         $serverDef->addMethodCall('enableGrantType', [
             new Reference('klipper_security_oauth.grant.password'),
