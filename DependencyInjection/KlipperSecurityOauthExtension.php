@@ -56,6 +56,7 @@ class KlipperSecurityOauthExtension extends Extension
         $this->configureClientCredentialsGrant($container, $loader, $grants['client_credentials'], $defaultGrant);
         $this->configurePasswordGrant($container, $loader, $grants['password'], $defaultGrant);
         $this->configureRefreshTokenGrant($container, $loader, $grants['refresh_token'], $defaultGrant);
+        $this->configureImplicitGrant($container, $loader, $grants['implicit'], $defaultGrant);
     }
 
     /**
@@ -126,6 +127,26 @@ class KlipperSecurityOauthExtension extends Extension
         $serverDef->addMethodCall('enableGrantType', [
             new Reference('klipper_security_oauth.grant.refresh_token'),
             new Reference('klipper_security_oauth.grant.refresh_token.access_token_ttl'),
+        ]);
+    }
+
+    /**
+     * @throws
+     */
+    private function configureImplicitGrant(ContainerBuilder $container, FileLoader $loader, array $config, array $default): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('oauth_grant_implicit.xml');
+        $serverDef = $container->getDefinition('klipper_security_oauth.authorization_server');
+        $container->setParameter('klipper_security_oauth.grant.implicit.implicit_ttl', $config['implicit_ttl']);
+        $container->setParameter('klipper_security_oauth.grant.implicit.access_token_ttl', $config['access_token_ttl'] ?? $default['access_token_ttl']);
+
+        $serverDef->addMethodCall('enableGrantType', [
+            new Reference('klipper_security_oauth.grant.implicit'),
+            new Reference('klipper_security_oauth.grant.implicit.access_token_ttl'),
         ]);
     }
 }

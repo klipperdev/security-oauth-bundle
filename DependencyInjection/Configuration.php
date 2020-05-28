@@ -56,6 +56,7 @@ class Configuration implements ConfigurationInterface
             ->append($this->getClientCredentialsGrantNode())
             ->append($this->getPasswordGrantNode())
             ->append($this->getRefreshTokenGrantNode())
+            ->append($this->getImplicitGrantNode())
         ;
     }
 
@@ -101,6 +102,18 @@ class Configuration implements ConfigurationInterface
             ->canBeDisabled()
             ->children()
             ->scalarNode('refresh_token_ttl')->defaultNull()->end()
+            ->scalarNode('access_token_ttl')->defaultNull()->end()
+            ->end()
+        ;
+    }
+
+    private function getImplicitGrantNode(): NodeDefinition
+    {
+        return NodeUtils::createArrayNode('implicit')
+            ->addDefaultsIfNotSet()
+            ->canBeEnabled()
+            ->children()
+            ->scalarNode('implicit_ttl')->defaultValue('PT1H')->end()
             ->scalarNode('access_token_ttl')->defaultNull()->end()
             ->end()
         ;

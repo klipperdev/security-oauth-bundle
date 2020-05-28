@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="klipper_security_oauth.grant.implicit"
+                 class="League\OAuth2\Server\Grant\ImplicitGrant">
+            <argument type="service" id="klipper_security_oauth.grant.implicit.implicit_ttl" />
+        </service>
+
+        <service id="klipper_security_oauth.grant.implicit.implicit_ttl"
+                 class="DateInterval">
+            <argument>%klipper_security_oauth.grant.implicit.implicit_ttl%</argument>
+        </service>
+
+        <service id="klipper_security_oauth.grant.implicit.access_token_ttl"
+                 class="DateInterval">
+            <argument>%klipper_security_oauth.grant.implicit.access_token_ttl%</argument>
+        </service>
+
+    </services>
+</container>
