@@ -19,5 +19,11 @@
             <tag name="console.command" command="generate:oauth:encryption-key" />
         </service>
 
+        <service id="klipper_security_oauth.command.clear_token"
+                 class="Klipper\Component\SecurityOauth\Command\ClearTokenCommand">
+            <tag name="console.command" command="oauth:token:clear" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
     </services>
 </container>
