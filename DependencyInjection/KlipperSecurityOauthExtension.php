@@ -52,7 +52,6 @@ class KlipperSecurityOauthExtension extends Extension
         $defaultGrant = $config['grants']['default'];
         $grants = $config['grants'];
         $this->configureAuthenticationProvider($container, $config);
-        $this->configureUserRepository($container, $config);
         $this->configurePasswordGrant($container, $loader, $grants['password'], $defaultGrant);
         $this->configureRefreshTokenGrant($container, $loader, $grants['refresh_token'], $defaultGrant);
     }
@@ -63,18 +62,6 @@ class KlipperSecurityOauthExtension extends Extension
     private function configureAuthenticationProvider(ContainerBuilder $container, array $config): void
     {
         $userRepoDef = $container->getDefinition('klipper_security_oauth.oauth.authentication.provider');
-        $userRepoDef->replaceArgument(
-            0,
-            new Reference('security.user.provider.concrete.'.$config['user_provider'])
-        );
-    }
-
-    /**
-     * @throws
-     */
-    private function configureUserRepository(ContainerBuilder $container, array $config): void
-    {
-        $userRepoDef = $container->getDefinition('klipper_security_oauth.repository.user');
         $userRepoDef->replaceArgument(
             0,
             new Reference('security.user.provider.concrete.'.$config['user_provider'])

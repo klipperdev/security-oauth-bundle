@@ -58,12 +58,9 @@
             <argument type="service" id="event_dispatcher" />
         </service>
 
-        <!-- User Repository -->
-        <service id="klipper_security_oauth.repository.user"
-                 class="Klipper\Component\SecurityOauth\Bridge\UserRepository">
-            <argument />
-            <argument type="service" id="security.password_encoder" />
-            <argument type="service" id="klipper_security_oauth.authentication.manager" />
+        <!-- Scope Repository -->
+        <service id="klipper_security_oauth.repository.scope"
+                 class="Klipper\Component\SecurityOauth\Bridge\ScopeRepository">
         </service>
 
         <!-- Client Repository -->
@@ -72,15 +69,17 @@
             <argument type="expression">service('doctrine.orm.entity_manager').getRepository('Klipper\\Component\\SecurityOauth\\Model\\OauthClientInterface')</argument>
         </service>
 
+        <!-- User Repository -->
+        <service id="klipper_security_oauth.repository.user"
+                 class="Klipper\Component\SecurityOauth\Bridge\UserRepository">
+            <argument type="service" id="klipper_security_oauth.authentication.manager" />
+        </service>
+
         <!-- Access Token Repository -->
         <service id="klipper_security_oauth.repository.access_token"
                  class="Klipper\Component\SecurityOauth\Bridge\AccessTokenRepository">
             <argument type="expression">service('doctrine.orm.entity_manager').getRepository('Klipper\\Component\\SecurityOauth\\Model\\OauthAccessTokenInterface')</argument>
-        </service>
-
-        <!-- Scope Repository -->
-        <service id="klipper_security_oauth.repository.scope"
-                 class="Klipper\Component\SecurityOauth\Bridge\ScopeRepository">
+            <argument type="service" id="klipper_security_oauth.authentication.manager" />
         </service>
 
         <!-- Refresh Token Repository -->
