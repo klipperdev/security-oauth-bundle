@@ -55,6 +55,7 @@ class KlipperSecurityOauthExtension extends Extension
         $this->configureAuthenticationProvider($container, $config);
         $this->configureClientCredentialsGrant($container, $loader, $grants['client_credentials'], $defaultGrant);
         $this->configurePasswordGrant($container, $loader, $grants['password'], $defaultGrant);
+        $this->configureAuthorizationCodeGrant($container, $loader, $grants['authorization_code'], $defaultGrant);
         $this->configureRefreshTokenGrant($container, $loader, $grants['refresh_token'], $defaultGrant);
         $this->configureImplicitGrant($container, $loader, $grants['implicit'], $defaultGrant);
     }
@@ -107,6 +108,27 @@ class KlipperSecurityOauthExtension extends Extension
         $serverDef->addMethodCall('enableGrantType', [
             new Reference('klipper_security_oauth.grant.password'),
             new Reference('klipper_security_oauth.grant.password.access_token_ttl'),
+        ]);
+    }
+
+    /**
+     * @throws
+     */
+    private function configureAuthorizationCodeGrant(ContainerBuilder $container, FileLoader $loader, array $config, array $default): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('oauth_grant_authorization_code.xml');
+        $serverDef = $container->getDefinition('klipper_security_oauth.authorization_server');
+        $container->setParameter('klipper_security_oauth.grant.authorization_code.authorization_code_ttl', $config['authorization_code_ttl']);
+        $container->setParameter('klipper_security_oauth.grant.authorization_code.refresh_token_ttl', $config['refresh_token_ttl'] ?? $default['refresh_token_ttl']);
+        $container->setParameter('klipper_security_oauth.grant.authorization_code.access_token_ttl', $config['access_token_ttl'] ?? $default['access_token_ttl']);
+
+        $serverDef->addMethodCall('enableGrantType', [
+            new Reference('klipper_security_oauth.grant.authorization_code'),
+            new Reference('klipper_security_oauth.grant.authorization_code.access_token_ttl'),
         ]);
     }
 

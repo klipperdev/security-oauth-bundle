@@ -55,6 +55,7 @@ class Configuration implements ConfigurationInterface
             ->append($this->getDefaultNode())
             ->append($this->getClientCredentialsGrantNode())
             ->append($this->getPasswordGrantNode())
+            ->append($this->getAuthorizationCodeGrantNode())
             ->append($this->getRefreshTokenGrantNode())
             ->append($this->getImplicitGrantNode())
         ;
@@ -89,6 +90,19 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->canBeDisabled()
             ->children()
+            ->scalarNode('refresh_token_ttl')->defaultNull()->end()
+            ->scalarNode('access_token_ttl')->defaultNull()->end()
+            ->end()
+        ;
+    }
+
+    private function getAuthorizationCodeGrantNode(): NodeDefinition
+    {
+        return NodeUtils::createArrayNode('authorization_code')
+            ->addDefaultsIfNotSet()
+            ->canBeDisabled()
+            ->children()
+            ->scalarNode('authorization_code_ttl')->defaultValue('PT10M')->end()
             ->scalarNode('refresh_token_ttl')->defaultNull()->end()
             ->scalarNode('access_token_ttl')->defaultNull()->end()
             ->end()
