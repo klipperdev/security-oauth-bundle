@@ -53,6 +53,7 @@ class KlipperSecurityOauthExtension extends Extension
         $defaultGrant = $config['grants']['default'];
         $grants = $config['grants'];
         $this->configureAuthenticationProvider($container, $config);
+        $this->configureClientCredentialsGrant($container, $loader, $grants['client_credentials'], $defaultGrant);
         $this->configurePasswordGrant($container, $loader, $grants['password'], $defaultGrant);
         $this->configureRefreshTokenGrant($container, $loader, $grants['refresh_token'], $defaultGrant);
     }
@@ -67,6 +68,25 @@ class KlipperSecurityOauthExtension extends Extension
             0,
             new Reference('security.user.provider.concrete.'.$config['user_provider'])
         );
+    }
+
+    /**
+     * @throws
+     */
+    private function configureClientCredentialsGrant(ContainerBuilder $container, FileLoader $loader, array $config, array $default): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('oauth_grant_client_credentials.xml');
+        $serverDef = $container->getDefinition('klipper_security_oauth.authorization_server');
+        $container->setParameter('klipper_security_oauth.grant.client_credentials.access_token_ttl', $config['access_token_ttl'] ?? $default['access_token_ttl']);
+
+        $serverDef->addMethodCall('enableGrantType', [
+            new Reference('klipper_security_oauth.grant.client_credentials'),
+            new Reference('klipper_security_oauth.grant.client_credentials.access_token_ttl'),
+        ]);
     }
 
     /**
