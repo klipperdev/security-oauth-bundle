@@ -77,6 +77,7 @@
         <service id="klipper_security_oauth.repository.scope"
                  class="Klipper\Component\SecurityOauth\Bridge\ScopeRepository">
             <argument type="service" id="klipper_security_oauth.scope.manager" />
+            <argument>%klipper_security_oauth.repository.scope.allow_all_scopes%</argument>
         </service>
 
         <!-- Client Repository -->

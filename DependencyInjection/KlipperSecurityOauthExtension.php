@@ -176,11 +176,16 @@ class KlipperSecurityOauthExtension extends Extension
         ]);
     }
 
-    private function configureScopes(ContainerBuilder $container, array $scopes): void
+    private function configureScopes(ContainerBuilder $container, array $config): void
     {
+        $container->setParameter(
+            'klipper_security_oauth.repository.scope.allow_all_scopes',
+            $config['allow_all_scopes']
+        );
+
         $container->setDefinition(
             'klipper_security_oauth.scope.loader.config',
-            (new Definition(SimpleScopeLoader::class, [$scopes]))
+            (new Definition(SimpleScopeLoader::class, [$config['availables']]))
                 ->addTag('klipper_security_oauth.scope_loader')
         );
     }

@@ -137,7 +137,12 @@ class Configuration implements ConfigurationInterface
     private function getScopesNode(): NodeDefinition
     {
         return NodeUtils::createArrayNode('scopes')
-            ->scalarPrototype()
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->booleanNode('allow_all_scopes')->defaultTrue()->end()
+            ->arrayNode('availables')
+            ->scalarPrototype()->end()
+            ->end()
             ->end()
         ;
     }
