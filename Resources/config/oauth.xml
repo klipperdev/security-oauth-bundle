@@ -73,6 +73,9 @@
             <argument type="collection" />
         </service>
 
+        <service id="Klipper\Component\SecurityOauth\Scope\ScopeRegistryInterface"
+                 alias="klipper_security_oauth.scope.registry" />
+
         <!-- Scope Repository -->
         <service id="klipper_security_oauth.repository.scope"
                  class="Klipper\Component\SecurityOauth\Bridge\ScopeRepository">

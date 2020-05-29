@@ -13,6 +13,7 @@ namespace Klipper\Bundle\SecurityOauthBundle\DependencyInjection;
 
 use Klipper\Component\SecurityOauth\Scope\Loader\SimpleScopeLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
@@ -40,6 +41,7 @@ class KlipperSecurityOauthExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('oauth.xml');
+        $loader->load('oauth_cache.xml');
         $loader->load('oauth_firewall.xml');
         $loader->load('command.xml');
         $loader->load('doctrine_subscriber.xml');
@@ -178,6 +180,8 @@ class KlipperSecurityOauthExtension extends Extension
 
     private function configureScopes(ContainerBuilder $container, array $config): void
     {
+        $configDir = $container->getParameter('kernel.project_dir').'/config';
+
         $container->setParameter(
             'klipper_security_oauth.repository.scope.allow_all_scopes',
             $config['allow_all_scopes']
@@ -187,6 +191,9 @@ class KlipperSecurityOauthExtension extends Extension
             'klipper_security_oauth.scope.loader.config',
             (new Definition(SimpleScopeLoader::class, [$config['availables']]))
                 ->addTag('klipper_security_oauth.scope_loader')
+                ->addMethodCall('addResource', [
+                    new Definition(DirectoryResource::class, [$configDir]),
+                ])
         );
     }
 }
