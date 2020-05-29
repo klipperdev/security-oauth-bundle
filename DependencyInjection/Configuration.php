@@ -43,6 +43,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('encryption_key')->defaultValue('%env(OAUTH2_ENCRYPTION_KEY)%')->end()
             ->end()
             ->append($this->getGrantsNode())
+            ->append($this->getScopesNode())
         ;
 
         return $treeBuilder;
@@ -129,6 +130,14 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('implicit_ttl')->defaultValue('PT1H')->end()
             ->scalarNode('access_token_ttl')->defaultNull()->end()
+            ->end()
+        ;
+    }
+
+    private function getScopesNode(): NodeDefinition
+    {
+        return NodeUtils::createArrayNode('scopes')
+            ->scalarPrototype()
             ->end()
         ;
     }

@@ -11,8 +11,10 @@
 
 namespace Klipper\Bundle\SecurityOauthBundle\DependencyInjection;
 
+use Klipper\Component\SecurityOauth\Scope\Loader\SimpleScopeLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Loader\FileLoader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -59,6 +61,7 @@ class KlipperSecurityOauthExtension extends Extension
         $this->configureAuthorizationCodeGrant($container, $loader, $grants['authorization_code'], $defaultGrant);
         $this->configureRefreshTokenGrant($container, $loader, $grants['refresh_token'], $defaultGrant);
         $this->configureImplicitGrant($container, $loader, $grants['implicit'], $defaultGrant);
+        $this->configureScopes($container, $config['scopes']);
     }
 
     /**
@@ -171,5 +174,14 @@ class KlipperSecurityOauthExtension extends Extension
             new Reference('klipper_security_oauth.grant.implicit'),
             new Reference('klipper_security_oauth.grant.implicit.access_token_ttl'),
         ]);
+    }
+
+    private function configureScopes(ContainerBuilder $container, array $scopes): void
+    {
+        $container->setDefinition(
+            'klipper_security_oauth.scope.loader.config',
+            (new Definition(SimpleScopeLoader::class, [$scopes]))
+                ->addTag('klipper_security_oauth.scope_loader')
+        );
     }
 }

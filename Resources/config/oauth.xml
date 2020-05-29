@@ -58,6 +58,21 @@
             <argument type="service" id="event_dispatcher" />
         </service>
 
+        <!-- Oauth Scope Manager -->
+        <service id="klipper_security_oauth.scope.manager"
+                 class="Klipper\Component\SecurityOauth\Scope\ScopeManager"
+                 public="true">
+            <argument type="service" id="klipper_security_oauth.scope.registry" />
+        </service>
+
+        <service id="Klipper\Component\SecurityOauth\Scope\ScopeManager"
+                 alias="klipper_security_oauth.scope.manager" />
+
+        <service id="klipper_security_oauth.scope.registry"
+                 class="Klipper\Component\SecurityOauth\Scope\ScopeRegistry">
+            <argument type="collection" />
+        </service>
+
         <!-- Scope Repository -->
         <service id="klipper_security_oauth.repository.scope"
                  class="Klipper\Component\SecurityOauth\Bridge\ScopeRepository">
