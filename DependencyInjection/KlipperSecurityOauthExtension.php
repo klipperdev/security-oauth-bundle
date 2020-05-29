@@ -64,6 +64,7 @@ class KlipperSecurityOauthExtension extends Extension
         $this->configureRefreshTokenGrant($container, $loader, $grants['refresh_token'], $defaultGrant);
         $this->configureImplicitGrant($container, $loader, $grants['implicit'], $defaultGrant);
         $this->configureScopes($container, $config['scopes']);
+        $this->configureSecurityVoter($loader, $config['security_voter']);
     }
 
     /**
@@ -195,5 +196,15 @@ class KlipperSecurityOauthExtension extends Extension
                     new Definition(DirectoryResource::class, [$configDir]),
                 ])
         );
+    }
+
+    /**
+     * @throws
+     */
+    private function configureSecurityVoter(FileLoader $loader, array $config): void
+    {
+        if ($config['oauth_scope']) {
+            $loader->load('security_voter_oauth_scope.xml');
+        }
     }
 }

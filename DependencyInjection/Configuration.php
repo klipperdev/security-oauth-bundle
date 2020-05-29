@@ -12,6 +12,7 @@
 namespace Klipper\Bundle\SecurityOauthBundle\DependencyInjection;
 
 use Klipper\Bundle\SecurityBundle\DependencyInjection\NodeUtils;
+use Klipper\Component\Security\Identity\SecurityIdentityInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -44,6 +45,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->append($this->getGrantsNode())
             ->append($this->getScopesNode())
+            ->append($this->getSecurityVoterNode())
         ;
 
         return $treeBuilder;
@@ -142,6 +144,18 @@ class Configuration implements ConfigurationInterface
             ->booleanNode('allow_all_scopes')->defaultTrue()->end()
             ->arrayNode('availables')
             ->scalarPrototype()->end()
+            ->end()
+            ->end()
+        ;
+    }
+
+    private function getSecurityVoterNode(): NodeDefinition
+    {
+        return NodeUtils::createArrayNode('security_voter')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('oauth_scope')
+            ->defaultValue(interface_exists(SecurityIdentityInterface::class))
             ->end()
             ->end()
         ;

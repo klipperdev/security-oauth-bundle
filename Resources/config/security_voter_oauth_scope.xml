@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- Oauth Scope Security Voter -->
+        <service id="klipper_security_oauth.access.oauth_scope_voter"
+                 class="Klipper\Component\SecurityOauth\Authorization\Voter\OauthScopeVoter"
+                 public="false">
+            <tag name="security.voter" priority="245" />
+            <argument type="service" id="klipper_security.security_identity_manager" />
+        </service>
+
+        <!-- Oauth Scope Security Identity Subscriber -->
+        <service id="klipper_security_oauth.subscriber.security_identity.oauth_scope"
+                 class="Klipper\Component\SecurityOauth\Listener\OauthScopeSecurityIdentitySubscriber">
+            <tag name="klipper_security.event_subscriber"/>
+        </service>
+    </services>
+</container>
