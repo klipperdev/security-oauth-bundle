@@ -43,6 +43,7 @@ class KlipperSecurityOauthExtension extends Extension
         $loader->load('oauth.xml');
         $loader->load('oauth_cache.xml');
         $loader->load('oauth_firewall.xml');
+        $loader->load('oauth_listener.xml');
         $loader->load('command.xml');
         $loader->load('doctrine_subscriber.xml');
         $loader->load('exception_listener.xml');
