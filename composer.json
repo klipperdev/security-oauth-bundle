@@ -13,6 +13,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4.0",
+        "klipper/config-bundle": "^2.0.0",
         "klipper/security-oauth": "^2.0.0",
         "symfony/framework-bundle": "^4.4.0",
         "symfony/security-bundle": "^4.4.0",
