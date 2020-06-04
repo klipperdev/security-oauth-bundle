@@ -11,6 +11,7 @@
 
 namespace Klipper\Bundle\SecurityOauthBundle\DependencyInjection;
 
+use Klipper\Component\Security\Identity\SecurityIdentityInterface;
 use Klipper\Component\SecurityOauth\Scope\Loader\SimpleScopeLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\DirectoryResource;
@@ -64,6 +65,7 @@ class KlipperSecurityOauthExtension extends Extension
         $this->configureImplicitGrant($container, $loader, $grants['implicit'], $defaultGrant);
         $this->configureScopes($container, $config['scopes']);
         $this->configureSecurityVoter($loader, $config['security_voter']);
+        $this->configureSecurityIdentity($loader);
     }
 
     /**
@@ -204,6 +206,16 @@ class KlipperSecurityOauthExtension extends Extension
     {
         if ($config['oauth_scope']) {
             $loader->load('security_voter_oauth_scope.xml');
+        }
+    }
+
+    /**
+     * @throws
+     */
+    private function configureSecurityIdentity(FileLoader $loader): void
+    {
+        if (interface_exists(SecurityIdentityInterface::class)) {
+            $loader->load('security_identity_listener.xml');
         }
     }
 }
