@@ -19,6 +19,12 @@
             <tag name="console.command" command="generate:oauth:encryption-key" />
         </service>
 
+        <service id="klipper_security_oauth.command.generate_client"
+                 class="Klipper\Component\SecurityOauth\Command\GenerateOauthClientCommand">
+            <tag name="console.command" command="generate:oauth:client" />
+            <argument type="service" id="klipper_resource.domain_manager" />
+        </service>
+
         <service id="klipper_security_oauth.command.clear_token"
                  class="Klipper\Component\SecurityOauth\Command\ClearTokenCommand">
             <tag name="console.command" command="oauth:token:clear" />
