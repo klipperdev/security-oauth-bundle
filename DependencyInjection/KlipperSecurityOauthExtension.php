@@ -73,9 +73,15 @@ class KlipperSecurityOauthExtension extends Extension
      */
     private function configureAuthenticationProvider(ContainerBuilder $container, array $config): void
     {
-        $userRepoDef = $container->getDefinition('klipper_security_oauth.oauth.authentication.provider');
-        $userRepoDef->replaceArgument(
+        $authenticatorDef = $container->getDefinition('klipper_security_oauth.authenticator.oauth.authenticator');
+        $authenticatorDef->replaceArgument(
             0,
+            new Reference('security.user.provider.concrete.'.$config['user_provider'])
+        );
+
+        $accessTokenRepoDef = $container->getDefinition('klipper_security_oauth.user_authenticator');
+        $accessTokenRepoDef->replaceArgument(
+            2,
             new Reference('security.user.provider.concrete.'.$config['user_provider'])
         );
     }

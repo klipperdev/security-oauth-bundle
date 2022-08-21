@@ -6,19 +6,11 @@
 
     <services>
 
-        <service id="klipper_security_oauth.oauth.authentication.provider"
-                 class="Klipper\Component\SecurityOauth\Authentication\Provider\OauthProvider">
-            <argument type="collection"/>
+        <service id="klipper_security_oauth.authenticator.oauth.authenticator"
+                 class="Klipper\Component\SecurityOauth\Authenticator\OauthAuthenticator"
+                 abstract="true">
+            <argument/>
             <argument type="service" id="klipper_security_oauth.resource_server" />
-            <argument type="collection"/>
-        </service>
-
-        <service id="klipper_security_oauth.oauth.authentication.listener"
-                 class="Klipper\Component\SecurityOauth\Firewall\OauthListener">
-            <argument type="service" id="security.token_storage" />
-            <argument type="service" id="security.authentication.manager" />
-            <argument type="collection"/>
-            <argument type="collection"/>
         </service>
 
     </services>

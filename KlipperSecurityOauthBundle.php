@@ -12,7 +12,7 @@
 namespace Klipper\Bundle\SecurityOauthBundle;
 
 use Klipper\Bundle\SecurityOauthBundle\DependencyInjection\Compiler\ScopeRegistryPass;
-use Klipper\Component\SecurityOauth\Factory\OauthFactory;
+use Klipper\Bundle\SecurityOauthBundle\Factory\OauthFactory;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -28,6 +28,6 @@ class KlipperSecurityOauthBundle extends Bundle
 
         /** @var SecurityExtension $extension */
         $extension = $container->getExtension('security');
-        $extension->addSecurityListenerFactory(new OauthFactory());
+        $extension->addAuthenticatorFactory(new OauthFactory());
     }
 }

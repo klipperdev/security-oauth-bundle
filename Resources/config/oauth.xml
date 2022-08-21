@@ -49,13 +49,21 @@
             <argument>%klipper_security_oauth.server.encryption_key%</argument>
         </service>
 
-        <!-- Oauth Authentication Manager -->
-        <service id="klipper_security_oauth.authentication.manager"
-                 class="Klipper\Component\SecurityOauth\Authentication\AuthenticationManager">
-            <argument type="service" id="security.authentication.manager" />
-            <argument type="service" id="security.token_storage" />
+        <!-- Oauth User Authenticator -->
+        <service id="klipper_security_oauth.user_authenticator"
+                 class="Klipper\Component\SecurityOauth\Authenticator\UserAuthenticator">
             <argument type="service" id="request_stack" />
-            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="security.token_storage" />
+            <argument />
+            <argument type="service" id="security.password_hasher" />
+            <argument type="service" id="security.user_authenticator" />
+            <argument type="service" id="klipper_security_oauth.authenticator.oauth.token_authenticator" />
+        </service>
+
+        <service id="Klipper\Component\SecurityOauth\Authenticator\UserAuthenticatorInterface" alias="klipper_security_oauth.user_authenticator" />
+
+        <service id="klipper_security_oauth.authenticator.oauth.token_authenticator"
+                 class="Klipper\Component\SecurityOauth\Authenticator\OauthTokenAuthenticator">
         </service>
 
         <!-- Oauth Scope Manager -->
@@ -92,14 +100,14 @@
         <!-- User Repository -->
         <service id="klipper_security_oauth.repository.user"
                  class="Klipper\Component\SecurityOauth\Bridge\UserRepository">
-            <argument type="service" id="klipper_security_oauth.authentication.manager" />
+            <argument type="service" id="klipper_security_oauth.user_authenticator" />
         </service>
 
         <!-- Access Token Repository -->
         <service id="klipper_security_oauth.repository.access_token"
                  class="Klipper\Component\SecurityOauth\Bridge\AccessTokenRepository">
             <argument type="expression">service('doctrine.orm.entity_manager').getRepository('Klipper\\Component\\SecurityOauth\\Model\\OauthAccessTokenInterface')</argument>
-            <argument type="service" id="klipper_security_oauth.authentication.manager" />
+            <argument type="service" id="klipper_security_oauth.user_authenticator" />
         </service>
 
         <!-- Refresh Token Repository -->
